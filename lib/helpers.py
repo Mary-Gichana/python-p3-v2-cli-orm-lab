@@ -68,28 +68,77 @@ def delete_department():
 # You'll implement the employee functions in the lab
 
 def list_employees():
-    pass
+    employees = Employee.get_all()
+    if employees:
+        print("List of Employees:")
+        for emp in employees:
+            print(emp) 
+    else:
+        print("No employees found.")
+
 
 
 def find_employee_by_name():
-    pass
+    name = input("Enter the employee's name: ")
+    employees = Employee.find_by_name(name)
+    if employees:
+        print(f"Employees with name '{name}':")
+        for emp in employees:
+            print(emp)
+    else:
+        print(f"No employees found with name '{name}'.")
 
 
 def find_employee_by_id():
-    pass
-
+    id_ = input("Enter the employee's ID: ")
+    if employee := Employee.find_by_id(id_):
+        print("Employee found:")
+        print(employee)
+    else:
+        print(f"No employee found with ID '{id_}'.")
 
 def create_employee():
-    pass
+    name = input("Enter the employee's name: ")
+    position = input("Enter the employee's position: ")
+    salary = input("Enter the employee's salary: ")
+    department_id = input("Enter the employee's department ID: ")
 
+    employee = Employee.create(name=name, position=position, salary=salary, department_id=department_id)
+    if employee:
+        print("Employee created successfully:")
+        print(employee)
+    else:
+        print("Failed to create employee.")
 
 def update_employee():
-    pass
+    id_ = input("Enter the employee's ID to update: ")
+    if employee := Employee.find_by_id(id_):
+        print("Leave fields blank to keep current value.")
+        name = input(f"Enter new name (current: {employee.name}): ") or employee.name
+        position = input(f"Enter new position (current: {employee.position}): ") or employee.position
+        salary = input(f"Enter new salary (current: {employee.salary}): ") or employee.salary
+        department_id = input(f"Enter new department ID (current: {employee.department_id}): ") or employee.department_id
 
+        updated_employee = employee.update(name=name, position=position, salary=salary, department_id=department_id)
+        print("Employee updated successfully:")
+        print(updated_employee)
+    else:
+        print(f"No employee found with ID '{id_}'.")
 
 def delete_employee():
-    pass
+    id_ = input("Enter the employee's ID to delete: ")
+    if employee := Employee.find_by_id(id_):
+        employee.delete()
+        print(f"Employee with ID '{id_}' deleted.")
+    else:
+        print(f"No employee found with ID '{id_}'.")
 
-
-def list_department_employees():
-    pass
+def list_employees_in_department():
+    department_id = input("Enter the department ID: ")
+    employees = Employee.get_by_department(department_id)
+    if employees:
+        print(f"Employees in Department {department_id}:")
+        for emp in employees:
+            print(emp)
+    else:
+        print(f"No employees found in Department {department_id}.")
